@@ -92,9 +92,8 @@ class TelegramController extends Controller
         if ($user) {
             $user->update([
                 'phone' => $contact['phone_number'],
-                'nick' => $contact['username'],
-                'name' => $contact['first_name'],
-                'surename' => $contact['last_name'] ?? '',
+
+
                 'status' => 'approved',
             ]);
         }
