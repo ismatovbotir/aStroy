@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nick')->nullable();
             $table->string('phone')->nullable();
             $table->string('name')->nullable();
-            $table->string('surname')->nullable();
+            $table->string('surename')->nullable();
             $table->foreignId('object_id')->nullable(); // объект стройки
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
