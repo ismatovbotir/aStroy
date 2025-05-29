@@ -66,7 +66,7 @@ class TelegramController extends Controller
     {
         $user = Telegram::firstOrCreate(
             ['id' => $chatId],
-            ['role' => 'pending']
+            ['status' => 'pending']
         );
 
         $text = "Добро пожаловать! Пожалуйста, поделитесь своим контактом с помощью кнопки ниже.";
