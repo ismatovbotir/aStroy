@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Telegram;
+use App\Models\telegram;
 use App\Models\Request as RequestMessages;
 use Illuminate\Support\Facades\Http;
 
