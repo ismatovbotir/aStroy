@@ -107,6 +107,45 @@ class TelegramController extends Controller
         return response('ok');
     }
 
+    public function finishRequest($chatId)
+    {
+        $user = telegram::find($chatId);
+        if (!$user) {
+            return response('User not found', 404);
+        }
+
+        // Получаем все черновики для этого пользователя
+        $drafts = DraftRequest::where('telegram_id', $chatId)->get();
+
+        if ($drafts->isEmpty()) {
+            $this->sendMessage($chatId, "У вас нет черновиков для завершения.");
+            return response('No drafts found', 404);
+        }
+
+        // Обрабатываем каждый черновик
+        foreach ($drafts as $draft) {
+            RequestMessages::create([
+                'telegram_id' => $chatId,
+                'text' => $draft->text,
+                'type' => 'text', // Предполагаем, что это текстовая заявка
+            ]);
+            // Удаляем черновик после создания заявки
+            $draft->delete();
+        }
+
+        $text = "Ваши заявки успешно созданы!";
+        $keyboard = [
+            'keyboard' => [
+                [['text' => '📝 Создать заявку']]
+            ],
+            'resize_keyboard' => true
+        ];
+
+        $this->sendMessage($chatId, $text, $keyboard);
+
+        return response('ok');
+    }
+
     public function contact($chatId, $contact)
     {
         $user = telegram::find($chatId);
