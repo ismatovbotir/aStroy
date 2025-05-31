@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("request_id")->nullable()->constrained();
             $table->unsignedBigInteger('telegram_id');
-            $table->foreign('telegram_id')->constrained();
+            $table->foreign('telegram_id')->references('id')->on('telegrams')->onDelete('cascade');
+
             $table->foreignId('user_id')->nullable()->constrained();
             $table->text('text');
             $table->timestamps();
