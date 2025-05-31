@@ -131,7 +131,7 @@ class TelegramController extends Controller
         $requestItems->update(['request_id' => $newOrder->id]);
 
 
-        $text = "Ваши заявки успешно созданы!";
+        $text = "Ваши заявки успешно созданы! #" . $newOrder->id;
         $keyboard = [
             'keyboard' => [
                 [['text' => '📝 Создать заявку']]

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('telegram_id');
             $table->foreign('telegram_id')->references('id')->on('telegrams')->onDelete('cascade');
             $table->foreignId('object_id')->nullable();
-            $table->text('content')->nullable();
+            $table->text('comment')->nullable();
             $table->enum('status', ['new', 'accepted', 'rejected', 'done'])->default('new');
             $table->timestamps();
         });
