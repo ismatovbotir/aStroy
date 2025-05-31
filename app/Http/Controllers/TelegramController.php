@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\telegram;
 use App\Models\Request as RequestMessages;
-use App\models\DraftRequest;
+use App\Models\DraftRequest;
 use Illuminate\Support\Facades\Http;
 
 
