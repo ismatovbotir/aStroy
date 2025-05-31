@@ -147,6 +147,6 @@ class TelegramController extends Controller
         // Ответ пользователю
         $this->sendMessage($chatId, "Ваше сообщение сохранено: {$text}");
 
-        return response('message ok');
+        return response('ok');
     }
 }
