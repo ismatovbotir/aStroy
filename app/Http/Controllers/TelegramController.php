@@ -116,7 +116,7 @@ class TelegramController extends Controller
         }
 
         // Получаем все черновики для этого пользователя
-        $requestItems = RequestItem::where('telegram_id', $chatId)->whereNull('request_id');
+        $requestItems = RequestItem::where('telegram_id', $chatId)->whereNull('request_id')->get();
 
         if ($requestItems->isEmpty()) {
             $this->sendMessage($chatId, "У вас нет черновиков для завершения.");
