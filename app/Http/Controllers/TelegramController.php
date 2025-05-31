@@ -180,6 +180,7 @@ class TelegramController extends Controller
         }
 
         // Сохраняем сообщение в базу данных
+
         DraftRequest::create([
             'telegram_id' => $chatId,
             'text' => $text,
