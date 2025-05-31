@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\telegram;
 use App\Models\Request as RequestMessages;
+use App\models\DraftRequest;
 use Illuminate\Support\Facades\Http;
 
 
@@ -86,6 +87,26 @@ class TelegramController extends Controller
         return response('start ok');
     }
 
+    public function startRequest($chatId)
+    {
+        $user = telegram::find($chatId);
+        if (!$user) {
+            return response('User not found', 404);
+        }
+
+        $text = "Пожалуйста, опишите вашу заявку.";
+        $keyboard = [
+            'keyboard' => [
+                [['text' => '✅ Завершить заявку']]
+            ],
+            'resize_keyboard' => true
+        ];
+
+        $this->sendMessage($chatId, $text, $keyboard);
+
+        return response('start request ok');
+    }
+
     public function contact($chatId, $contact)
     {
         $user = telegram::find($chatId);
@@ -108,5 +129,24 @@ class TelegramController extends Controller
 
         $this->sendMessage($chatId, $text, $keyboard);
         return response('contact ok');
+    }
+
+    public function message($chatId, $text)
+    {
+        $user = telegram::find($chatId);
+        if (!$user) {
+            return response('User not found', 404);
+        }
+
+        // Сохраняем сообщение в базу данных
+        DraftRequest::create([
+            'telegram_id' => $chatId,
+            'text' => $text,
+        ]);
+
+        // Ответ пользователю
+        $this->sendMessage($chatId, "Ваше сообщение сохранено: {$text}");
+
+        return response('message ok');
     }
 }

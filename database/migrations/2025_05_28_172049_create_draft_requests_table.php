@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('telegram_id');
             $table->foreign('telegram_id')->references('id')->on('telegrams')->onDelete('cascade');
             $table->text('content');
-            $table->string("type")->nullable();
+            $table->string("type")->nullable()->default('text'); // Тип контента: text, image, video и т.д.
             $table->timestamps();
         });
     }
