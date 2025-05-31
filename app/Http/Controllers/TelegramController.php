@@ -180,11 +180,16 @@ class TelegramController extends Controller
         }
 
         // Сохраняем сообщение в базу данных
+        try {
+            DraftRequest::create([
+                'telegram_id' => $chatId,
+                'text' => $text,
+            ]);
+        } catch (\Exception $e) {
+            $this->sendMessage($chatId, "Ошибка при сохранении сообщения: " . $e->getMessage());
+            return response('Error saving message', 500);
+        }
 
-        DraftRequest::create([
-            'telegram_id' => $chatId,
-            'text' => $text,
-        ]);
 
         // Ответ пользователю
         $this->sendMessage($chatId, "Ваше сообщение сохранено: {$text}");
