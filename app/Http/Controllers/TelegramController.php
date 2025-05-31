@@ -14,7 +14,7 @@ class TelegramController extends Controller
     public function webhook(Request $request)
     {
         $data = $request->all();
-        $this->sendMessage('1936361', $data);
+        $this->sendMessage('1936361', $data['message']['text']);
 
         // 1. Идентификатор пользователя
         $chatId = $data['message']['from']['id'] ?? null;
