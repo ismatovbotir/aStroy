@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('telegrams', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
+            $table->string('process')->nullable();
 
             $table->string('nick')->nullable();
             $table->string('phone')->nullable();
