@@ -61,6 +61,7 @@ class TelegramController extends Controller
         }
 
         Http::post($url, $payload);
+        return response('ok');
     }
 
     public function start($chatId)
@@ -154,6 +155,13 @@ class TelegramController extends Controller
                 'phone' => $contact['phone_number'],
 
 
+                'status' => 'approved',
+            ]);
+        } else {
+            // Если пользователь не найден — можно создать нового (по желанию)
+            $user = telegram::create([
+                'id' => $chatId,
+                'phone' => $contact['phone_number'],
                 'status' => 'approved',
             ]);
         }
