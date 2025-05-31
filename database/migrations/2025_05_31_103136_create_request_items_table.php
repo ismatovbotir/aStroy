@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('request_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("request_id")->nullable()->constrained();
             $table->unsignedBigInteger('telegram_id');
-            $table->foreign('telegram_id')->references('id')->on('telegrams')->onDelete('cascade');
-            $table->foreignId('object_id')->nullable();
-            $table->text('content')->nullable();
-            $table->enum('status', ['new', 'accepted', 'rejected', 'done'])->default('new');
+            $table->foreign('telegram_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
+            $table->text('text');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('request_items');
     }
 };

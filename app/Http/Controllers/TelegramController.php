@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\telegram;
 use App\Models\Request as RequestMessages;
-use App\Models\DraftRequest;
+use App\Models\RequestItem;
 use Illuminate\Support\Facades\Http;
 
 
@@ -116,23 +116,20 @@ class TelegramController extends Controller
         }
 
         // Получаем все черновики для этого пользователя
-        $drafts = DraftRequest::where('telegram_id', $chatId)->get();
+        $requestItems = RequestItem::where('telegram_id', $chatId)->whereNull('request_id');
 
-        if ($drafts->isEmpty()) {
+        if ($requestItems->isEmpty()) {
             $this->sendMessage($chatId, "У вас нет черновиков для завершения.");
             return response('No drafts found', 404);
         }
 
         // Обрабатываем каждый черновик
-        foreach ($drafts as $draft) {
-            RequestMessages::create([
-                'telegram_id' => $chatId,
-                'text' => $draft->text,
-                'type' => 'text', // Предполагаем, что это текстовая заявка
-            ]);
-            // Удаляем черновик после создания заявки
-            $draft->delete();
-        }
+        $newOrder = RequestMessages::create([
+            'telegram_id' => $chatId
+
+        ]);
+        $requestItems->update(['request_id' => $newOrder->id]);
+
 
         $text = "Ваши заявки успешно созданы!";
         $keyboard = [
@@ -182,16 +179,16 @@ class TelegramController extends Controller
     {
         $user = telegram::find($chatId);
         if (!$user) {
-            $this->sendMessage($chatId, "no user found");
+            //$this->sendMessage($chatId, "no user found");
 
             return response('User not found', 404);
         }
 
         // Сохраняем сообщение в базу данных
         try {
-            DraftRequest::create([
+            RequestItem::create([
                 'telegram_id' => $chatId,
-                'content' => $text,
+                'text' => $text,
             ]);
         } catch (\Exception $e) {
             $this->sendMessage($chatId, "Ошибка при сохранении сообщения: " . $e->getMessage());
@@ -200,7 +197,7 @@ class TelegramController extends Controller
 
 
         // Ответ пользователю
-        $this->sendMessage($chatId, "Ваше сообщение сохранено: {$text}");
+        //$this->sendMessage($chatId, "Ваше сообщение сохранено: {$text}");
 
         return response('ok');
     }
