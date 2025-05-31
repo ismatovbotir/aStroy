@@ -90,7 +90,7 @@ class TelegramController extends Controller
 
     public function startRequest($chatId)
     {
-        $user = telegram::find($chatId);
+        $user = telegram::where("id", $chatId)->first();
         if (!$user) {
             return response('User not found', 404);
         }
