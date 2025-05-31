@@ -65,7 +65,7 @@ class TelegramController extends Controller
 
     public function start($chatId)
     {
-        $user = Telegram::firstOrCreate(
+        $user = telegram::firstOrCreate(
             ['id' => $chatId],
             ['status' => 'pending']
         );
@@ -84,7 +84,7 @@ class TelegramController extends Controller
 
         $this->sendMessage($chatId, $text, $keyboard);
 
-        return response('start ok');
+        return response('ok');
     }
 
     public function startRequest($chatId)
@@ -104,7 +104,7 @@ class TelegramController extends Controller
 
         $this->sendMessage($chatId, $text, $keyboard);
 
-        return response('start request ok');
+        return response('ok');
     }
 
     public function contact($chatId, $contact)
@@ -128,13 +128,15 @@ class TelegramController extends Controller
         ];
 
         $this->sendMessage($chatId, $text, $keyboard);
-        return response('contact ok');
+        return response('ok');
     }
 
     public function message($chatId, $text)
     {
         $user = telegram::find($chatId);
         if (!$user) {
+            $this->sendMessage($chatId, "no user found");
+
             return response('User not found', 404);
         }
 
