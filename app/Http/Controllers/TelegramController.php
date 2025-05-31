@@ -128,7 +128,9 @@ class TelegramController extends Controller
             'telegram_id' => $chatId
 
         ]);
-        $requestItems->update(['request_id' => $newOrder->id]);
+        RequestItem::where('telegram_id', $chatId)
+            ->whereNull('request_id')
+            ->update(['request_id' => $newOrder->id]);
 
 
         $text = "Ваши заявки успешно созданы! #" . $newOrder->id;
