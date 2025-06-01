@@ -21,11 +21,12 @@ class TelegramController extends Controller
         $text = $data['message']['text'] ?? '';
         $contact = $data['message']['contact'] ?? null;
 
-        if (!$chatId) return response('No chat ID', 400);
+        if (!$chatId) return response('No chat ID', 200);
 
         // 2. Обработка /start
         if ($text === '/start') {
-            return $this->start($chatId);
+            $this->start($chatId);
+            return response('ok', 200);
         }
 
         // 3. Контакт (через кнопку "Поделиться контактом")
