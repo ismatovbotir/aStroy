@@ -94,7 +94,7 @@ class TelegramController extends Controller
     {
         $user = telegram::where("id", $chatId)->first();
         if (!$user) {
-            return response('User not found', 404);
+            return response('User not found', 200);
         }
 
         $text = "Пожалуйста, опишите вашу заявку.";
