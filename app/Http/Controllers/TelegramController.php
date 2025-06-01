@@ -113,7 +113,7 @@ class TelegramController extends Controller
     {
         $user = telegram::find($chatId);
         if (!$user) {
-            return response('User not found', 404);
+            return response('ok', 200);
         }
 
         // Получаем все черновики для этого пользователя
@@ -121,7 +121,7 @@ class TelegramController extends Controller
 
         if ($requestItems->isEmpty()) {
             $this->sendMessage($chatId, "У вас нет черновиков для завершения.");
-            return response('No drafts found', 404);
+            return response('ok', 200);
         }
 
         // Обрабатываем каждый черновик
@@ -144,7 +144,7 @@ class TelegramController extends Controller
 
         $this->sendMessage($chatId, $text, $keyboard);
 
-        return response('ok');
+        return response('ok', 200);
     }
 
     public function contact($chatId, $contact)
@@ -175,7 +175,7 @@ class TelegramController extends Controller
         ];
 
         $this->sendMessage($chatId, $text, $keyboard);
-        return response('ok');
+        return response('ok', 200);
     }
 
     public function message($chatId, $text)
@@ -184,7 +184,7 @@ class TelegramController extends Controller
         if (!$user) {
             //$this->sendMessage($chatId, "no user found");
 
-            return response('User not found', 404);
+            return response('ok', 200);
         }
 
         // Сохраняем сообщение в базу данных
@@ -195,13 +195,13 @@ class TelegramController extends Controller
             ]);
         } catch (\Exception $e) {
             $this->sendMessage($chatId, "Ошибка при сохранении сообщения: " . $e->getMessage());
-            return response('Error saving message', 500);
+            return response('ok', 200);
         }
 
 
         // Ответ пользователю
         //$this->sendMessage($chatId, "Ваше сообщение сохранено: {$text}");
 
-        return response('ok');
+        return response('ok', 200);
     }
 }
